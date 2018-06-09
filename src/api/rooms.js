@@ -47,12 +47,12 @@ export default {
     let query = url.match(/\?(.+)/);
     let queryString = query ? query[0] : '';
     let {
-      minLat,
-      maxLat,
-      minLng,
-      maxLng,
+      min_lat: minLat,
+      max_lat: maxLat,
+      min_lng: minLng,
+      max_lng: maxLng,
       page,
-      itemsPerPage = 9
+      items_per_page: itemsPerPage = 9
     } = queryStringToObj(queryString);
 
     let filteredRooms = rooms.filter(({ lat, lng }) => {
