@@ -4,26 +4,26 @@ export default {
     do: {
       type: Function,
       default () {
-        return () => {};
+        return () => {}
       }
     }
   },
   methods: {
     handleClickOutside (e) {
       if (e.target === this.$el || this.$el.contains(e.target)) {
-        return;
+        return
       }
-      this.do();
+      this.do()
     }
   },
   mounted () {
-    document.addEventListener('click', this.handleClickOutside);
+    document.addEventListener('click', this.handleClickOutside)
     this.$once('hook:beforeDestroy', () => {
-      document.removeEventListener('click', this.handleClickOutside);
-    });
+      document.removeEventListener('click', this.handleClickOutside)
+    })
   },
   render (createElement) {
-    return this.$slots.default[0];
+    return this.$slots.default[0]
   }
-};
+}
 </script>

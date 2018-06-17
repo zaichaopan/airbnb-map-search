@@ -11,7 +11,6 @@
                 <path fill-rule="evenodd"
                       d="M15.7 13.3l-3.81-3.83A5.93 5.93 0 0 0 13 6c0-3.31-2.69-6-6-6S1 2.69 1 6s2.69 6 6 6c1.3 0 2.48-.41 3.47-1.11l3.83 3.81c.19.2.45.3.7.3.25 0 .52-.09.7-.3a.996.996 0 0 0 0-1.41v.01zM7 10.7c-2.59 0-4.7-2.11-4.7-4.7 0-2.59 2.11-4.7 4.7-4.7 2.59 0 4.7 2.11 4.7 4.7 0 2.59-2.11 4.7-4.7 4.7z">
                 </path>
- ,
             </svg>
             <input name="place"
                    class="search-input py-3 flex-1 appearance-none"
@@ -28,8 +27,9 @@
 </template>
 
 <script>
-import ClickOutside from './ClickOutside';
-import loadGoogleMapsApi from '../utils/load-google-map-api';
+import ClickOutside from './ClickOutside'
+import loadGoogleMapsApi from '../utils/load-google-map-api'
+import {googleMapKey} from '../../config'
 
 export default {
   components: {
@@ -43,7 +43,7 @@ export default {
           address: '',
           lat: 0.0,
           lng: 0.0
-        };
+        }
       }
     },
     customClass: {
@@ -66,60 +66,60 @@ export default {
         address: this.shortAddress(this.value.address)
       },
       focus: false
-    };
+    }
   },
   computed: {
     showClearIcon () {
-      return this.focus && this.place.address.length > 0;
+      return this.focus && this.place.address.length > 0
     }
   },
   methods: {
     autocomplete () {
-      this.input = this.$refs.pacInput;
-      this.dropdown = new this.googleMaps.places.Autocomplete(this.input);
+      this.input = this.$refs.pacInput
+      this.dropdown = new this.googleMaps.places.Autocomplete(this.input)
       this.dropdown.addListener('place_changed', () => {
-        let place = this.dropdown.getPlace();
-        let address = this.input.value;
-        this.input.value = this.shortAddress(address);
-        let lat = place.geometry.location.lat();
-        let lng = place.geometry.location.lng();
-        this.$emit('input', { address, lat, lng });
-      });
+        let place = this.dropdown.getPlace()
+        let address = this.input.value
+        this.input.value = this.shortAddress(address)
+        let lat = place.geometry.location.lat()
+        let lng = place.geometry.location.lng()
+        this.$emit('input', { address, lat, lng })
+      })
     },
     handleKeyDown (e) {
-      if (e.keyCode === 13) e.preventDefault();
+      if (e.keyCode === 13) e.preventDefault()
     },
     clearAddress () {
-      this.place.address = '';
+      this.place.address = ''
       this.$emit('input', {
         address: '',
         lat: this.value.lat,
         lng: this.value.lng
-      });
+      })
     },
     shortAddress (address) {
-      let addArr = address.split(',');
+      let addArr = address.split(',')
       if (addArr.length < 5) {
-        return address;
+        return address
       }
-      addArr.length = 3;
-      return addArr.join(',');
+      addArr.length = 3
+      return addArr.join(',')
     }
   },
   mounted () {
     loadGoogleMapsApi({
-      key: 'AIzaSyAEaJj6Mxw1SXjAdfiOAbnZtDxC3gA3PS4',
+      key: googleMapKey,
       libraries: ['places']
     })
       .then(googleMaps => {
-        this.googleMaps = googleMaps;
-        this.autocomplete();
+        this.googleMaps = googleMaps
+        this.autocomplete()
       })
       .catch(error => {
-        console.error(error);
-      });
+        console.error(error)
+      })
   }
-};
+}
 </script>
 
 <style  lang="scss">

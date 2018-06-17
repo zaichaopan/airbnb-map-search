@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import RoomItem from './RoomItem';
+import RoomItem from './RoomItem'
 
 export default {
   components: { RoomItem },
@@ -21,7 +21,7 @@ export default {
     rooms: {
       type: Array,
       default () {
-        return [];
+        return []
       }
     },
     gridClass: {
@@ -29,5 +29,5 @@ export default {
       default: 'w-1/3'
     }
   }
-};
+}
 </script>

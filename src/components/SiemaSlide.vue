@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { initSlide } from '../utils/siema-slide';
+import { initSlide } from '../utils/siema-slide'
 
 export default {
   props: {
@@ -33,13 +33,13 @@ export default {
       return Array.from(
         new Array(this.totalItems),
         (val, index) => index + 1
-      );
+      )
     }
   },
   mounted () {
-    initSlide(this.$refs.slide, 'prev', 'next', 'slide', 'indicators');
+    initSlide(this.$refs.slide, 'prev', 'next', 'slide', 'indicators')
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

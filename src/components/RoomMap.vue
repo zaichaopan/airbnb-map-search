@@ -6,9 +6,10 @@
 </template>
 
 <script>
-import infoWindowHelper from '../utils/room-map-infowindow';
-import loadGoogleMapsApi from '../utils/load-google-map-api';
-import markWithLabel from '../utils/marker-with-label';
+import infoWindowHelper from '../utils/room-map-infowindow'
+import loadGoogleMapsApi from '../utils/load-google-map-api'
+import markWithLabel from '../utils/marker-with-label'
+import {googleMapKey} from '../../config'
 
 export default {
   props: {
@@ -17,19 +18,19 @@ export default {
       validator (value) {
         return ['lat', 'lng'].every(
           key => ~Object.keys(value).indexOf(key)
-        );
+        )
       }
     },
     rooms: {
       type: Array,
       default () {
-        return [];
+        return []
       }
     },
     hoveredRoom: {
       type: Object,
       default () {
-        return {};
+        return {}
       }
     }
   },
@@ -42,13 +43,13 @@ export default {
       markers: [],
       zoom: 10,
       mapFullyLoaded: false
-    };
+    }
   },
   watch: {
     rooms () {
-      this.clearMarkers();
-      this.addMarkers();
-      this.createInfoWindow();
+      this.clearMarkers()
+      this.addMarkers()
+      this.createInfoWindow()
     },
     center: {
       deep: true,
@@ -68,32 +69,32 @@ export default {
           position: window.google.maps.ControlPosition.LEFT_TOP
         },
         center: this.center
-      });
-      this.MarkerWithLabel = markWithLabel(this.googleMaps);
-      this.infoWindow = new this.googleMaps.InfoWindow();
+      })
+      this.MarkerWithLabel = markWithLabel(this.googleMaps)
+      this.infoWindow = new this.googleMaps.InfoWindow()
     },
     resetCenter () {
-      this.mapFullyLoaded = false;
-      this.map.setCenter(new this.googleMaps.LatLng(this.center));
+      this.mapFullyLoaded = false
+      this.map.setCenter(new this.googleMaps.LatLng(this.center))
     },
     addEvenListeners () {
       ['zoom_changed', 'dragend'].forEach(event =>
         this.map.addListener(event, () => this.handleMapChanged())
-      );
+      )
       this.map.addListener('bounds_changed', () =>
         this.handleMapFullyLoaded()
-      );
+      )
     },
     handleMapChanged () {
-      this.infoWindow.close();
-      this.$emit('bounds:changed', { mapBounds: this.map.getBounds() });
+      this.infoWindow.close()
+      this.$emit('bounds:changed', { mapBounds: this.map.getBounds() })
     },
     handleMapFullyLoaded () {
       if (this.mapFullyLoaded) {
-        return;
+        return
       }
-      this.mapFullyLoaded = true;
-      this.handleMapChanged();
+      this.mapFullyLoaded = true
+      this.handleMapChanged()
     },
     handleHoveredRoom () {
       this.markers.forEach(marker => {
@@ -101,36 +102,36 @@ export default {
           return (
             ~marker.labelClass.indexOf('hovered') &&
                         this.resetLabelClass(marker, 'map-price-container')
-          );
+          )
         }
         if (marker.room.id === this.hoveredRoom.id) {
           return this.resetLabelClass(
             marker,
             'map-price-container-hovered'
-          );
+          )
         }
         ~marker.labelClass.indexOf('hovered') &&
-                    this.resetLabelClass(marker, 'map-price-container');
-      });
+                    this.resetLabelClass(marker, 'map-price-container')
+      })
     },
     clearMarkers () {
       this.markers.forEach(marker => {
-        marker.setMap(null);
-      });
+        marker.setMap(null)
+      })
     },
     addMarkers () {
       this.markers = this.rooms.map(room => {
-        let { lat, lng } = room;
+        let { lat, lng } = room
         const marker = new this.MarkerWithLabel(
           this.getMarkerLabelOptions({ lat, lng }, room, this.map)
-        );
-        marker.room = room;
-        return marker;
-      });
+        )
+        marker.room = room
+        return marker
+      })
     },
     resetLabelClass (marker, lableClass) {
-      marker.labelClass = lableClass;
-      marker.label.setStyles();
+      marker.labelClass = lableClass
+      marker.label.setStyles()
     },
     getMarkerLabelOptions (
       position,
@@ -148,58 +149,58 @@ export default {
           room.price
         }</span></div>`,
         labelClass: 'map-price-container'
-      };
+      }
     },
     removeInfoWindowWhiteSpace () {
-      infoWindowHelper.removeWhiteSpace();
+      infoWindowHelper.removeWhiteSpace()
     },
     handleInfoWindowDomReady (infoWindow) {
       this.googleMaps.event.addListener(infoWindow, 'domready', () => {
-        infoWindowHelper.removeWhiteSpace();
+        infoWindowHelper.removeWhiteSpace()
         infoWindowHelper.initSlides(
           'siema-container',
           'prev',
           'next',
           'siema',
           'indicators'
-        );
-      });
+        )
+      })
     },
     resetInfoWindow () {
       this.infoWindow =
-                this.infoWindow && new this.googleMaps.InfoWindow();
-      return this.infoWindow;
+                this.infoWindow && new this.googleMaps.InfoWindow()
+      return this.infoWindow
     },
     createInfoWindow () {
-      const vm = this;
-      const infoWindow = this.resetInfoWindow();
-      this.map.addListener('click', event => infoWindow.close());
-      this.handleInfoWindowDomReady(this.infoWindow);
+      const vm = this
+      const infoWindow = this.resetInfoWindow()
+      this.map.addListener('click', event => infoWindow.close())
+      this.handleInfoWindowDomReady(this.infoWindow)
       this.markers.forEach(marker =>
         marker.addListener('click', function () {
           infoWindow.setContent(
             infoWindowHelper.getContentHtml(this)
-          );
-          infoWindow.open(vm.map, this);
+          )
+          infoWindow.open(vm.map, this)
         })
-      );
+      )
     }
   },
   mounted () {
     loadGoogleMapsApi({
-      key: 'AIzaSyAEaJj6Mxw1SXjAdfiOAbnZtDxC3gA3PS4',
+      key: googleMapKey,
       libraries: ['places']
     })
       .then(googleMaps => {
-        this.googleMaps = googleMaps;
-        this.initMap();
-        this.addEvenListeners();
+        this.googleMaps = googleMaps
+        this.initMap()
+        this.addEvenListeners()
       })
       .catch(error => {
-        console.error(error);
-      });
+        console.error(error)
+      })
   }
-};
+}
 </script>
 
 <style  lang="scss">

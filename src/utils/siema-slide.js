@@ -1,4 +1,4 @@
-import Siema from 'siema';
+import Siema from 'siema'
 
 export const initSlide = (
   siemaContainer,
@@ -7,31 +7,31 @@ export const initSlide = (
   siemaClass,
   indicatorsClass
 ) => {
-  const prev = siemaContainer.querySelector(`.${preActionClass}`);
-  const next = siemaContainer.querySelector(`.${nexActionClass}`);
-  const siema = siemaContainer.querySelector(`.${siemaClass}`);
+  const prev = siemaContainer.querySelector(`.${preActionClass}`)
+  const next = siemaContainer.querySelector(`.${nexActionClass}`)
+  const siema = siemaContainer.querySelector(`.${siemaClass}`)
   const indicators = [
     ...siemaContainer.querySelector(`.${indicatorsClass}`).children
-  ];
+  ]
 
   const siemaInstance = new Siema({
     selector: siema,
     draggable: false,
     loop: true,
     onInit () {
-      indicators[0].classList.add('active');
+      indicators[0].classList.add('active')
     },
     onChange () {
       indicators.forEach((value, i) => {
         i === this.currentSlide
           ? value.classList.add('active')
-          : value.classList.remove('active');
-      });
+          : value.classList.remove('active')
+      })
     }
-  });
-  prev.addEventListener('click', () => siemaInstance.prev());
-  next.addEventListener('click', () => siemaInstance.next());
-};
+  })
+  prev.addEventListener('click', () => siemaInstance.prev())
+  next.addEventListener('click', () => siemaInstance.next())
+}
 
 export const initSlides = (
   containerClass,
@@ -40,7 +40,7 @@ export const initSlides = (
   siemaClass,
   indicatorsClass
 ) => {
-  const siemaContainers = document.querySelectorAll(`.${containerClass}`);
+  const siemaContainers = document.querySelectorAll(`.${containerClass}`)
   for (const siemaContainer of siemaContainers) {
     initSlide(
       siemaContainer,
@@ -48,6 +48,6 @@ export const initSlides = (
       nextActionClass,
       siemaClass,
       indicatorsClass
-    );
+    )
   }
-};
+}

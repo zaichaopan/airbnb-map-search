@@ -1,4 +1,4 @@
-import { initSlides } from './siema-slide';
+import { initSlides } from './siema-slide'
 
 const createSlideHtml = marker => {
   return marker.room.images
@@ -7,42 +7,42 @@ const createSlideHtml = marker => {
         <a href="#">
           <img src="${image}" alt="${marker.room.name}"/>
         </a>
-       `;
+       `
     })
-    .join('');
-};
+    .join('')
+}
 
 const createRatingHtml = marker => {
-  const maxRating = 5;
-  const rating = marker.room.rating;
-  const fullStars = Array.from(new Array(rating), (val, index) => index + 1);
+  const maxRating = 5
+  const rating = marker.room.rating
+  const fullStars = Array.from(new Array(rating), (val, index) => index + 1)
   const emptyStars = Array.from(
     new Array(maxRating - rating),
     (val, index) => index + 1 + rating
-  );
+  )
 
   const fullStarsHtml = fullStars
     .map(start => {
-      return `<span title="rating">&#9733;</span>`;
+      return `<span title="rating">&#9733;</span>`
     })
-    .join('');
+    .join('')
 
   const emptyStarsHtml = emptyStars
     .map(start => {
-      return `<span title="rating">&#9734;</span>`;
+      return `<span title="rating">&#9734;</span>`
     })
-    .join('');
+    .join('')
 
-  return `<div class="ratings text-xs text-teal-dark">${fullStarsHtml}${emptyStarsHtml}</span>`;
-};
+  return `<div class="ratings text-xs text-teal-dark">${fullStarsHtml}${emptyStarsHtml}</span>`
+}
 
 const createSlideIndicatorHtml = marker => {
   return marker.room.images
     .map(image => {
-      return `<span>&#x25cf;</span>`;
+      return `<span>&#x25cf;</span>`
     })
-    .join('');
-};
+    .join('')
+}
 
 const infoWindow = {
   getContentHtml (marker) {
@@ -59,14 +59,14 @@ const infoWindow = {
           <div class="price">$${marker.room.price} CAD per month</div>
           ${createRatingHtml(marker)}
         </div>
-      </div>`;
+      </div>`
   },
   removeWhiteSpace () {
-    let iwOuters = document.querySelectorAll('.gm-style-iw');
+    let iwOuters = document.querySelectorAll('.gm-style-iw')
     for (const iwOuter of iwOuters) {
-      let iwBackground = iwOuter.previousElementSibling;
+      let iwBackground = iwOuter.previousElementSibling
       for (const child of iwBackground.children) {
-        child.style.display = 'none';
+        child.style.display = 'none'
       }
     }
   },
@@ -84,8 +84,8 @@ const infoWindow = {
       nextActionClass,
       siemaClass,
       indicatorsClass
-    );
+    )
   }
-};
+}
 
-export default infoWindow;
+export default infoWindow

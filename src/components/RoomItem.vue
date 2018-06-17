@@ -25,8 +25,8 @@
 </template>
 
 <script>
-import SiemaSlide from './SiemaSlide';
-import StarRating from './StarRating';
+import SiemaSlide from './SiemaSlide'
+import StarRating from './StarRating'
 
 export default {
   components: {
@@ -39,5 +39,5 @@ export default {
       required: true
     }
   }
-};
+}
 </script>

@@ -23,14 +23,14 @@ export default {
   data () {
     return {
       checked: this.value
-    };
+    }
   },
   watch: {
     checked () {
-      this.$emit('input', this.checked);
+      this.$emit('input', this.checked)
     }
   }
-};
+}
 </script>
 
 <style scoped lang="scss">

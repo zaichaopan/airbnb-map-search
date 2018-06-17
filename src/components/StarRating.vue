@@ -19,21 +19,21 @@ export default {
   data () {
     return {
       maxRating: 5
-    };
+    }
   },
   computed: {
     fullStars () {
       return Array.from(
         new Array(this.rating),
         (val, index) => index + 1
-      );
+      )
     },
     emptyStars () {
       return Array.from(
         new Array(this.maxRating - this.rating),
         (val, index) => index + 1 + this.rating
-      );
+      )
     }
   }
-};
+}
 </script>
