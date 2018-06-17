@@ -95,33 +95,20 @@ export default {
       return Math.ceil(this.meta.last_page / this.pagesPerSection)
     },
     pages () {
-      let pages =
-                this.currentSection !== this.totalSections
-                  ? this.pagesPerSection
-                  : this.meta.last_page -
-                      this.pagesPerSection * (this.currentSection - 1)
-      let pagesArr = Array.from(
-        Array(pages),
-        (val, i) =>
-          (this.currentSection - 1) * this.pagesPerSection + i + 1
-      )
+      let pages = this.currentSection !== this.totalSections
+        ? this.pagesPerSection
+        : this.meta.last_page - this.pagesPerSection * (this.currentSection - 1)
+      let pagesArr = Array.from(Array(pages), (val, i) => (this.currentSection - 1) * this.pagesPerSection + i + 1)
       if (this.currentSection === 1) {
         if (this.pagesPerSection > this.meta.last_page) {
-          pagesArr = Array.from(
-            Array(this.meta.last_page),
-            (val, i) => i + 1
-          )
+          pagesArr = Array.from(Array(this.meta.last_page), (val, i) => i + 1)
         }
         return pagesArr
       }
       if (pagesArr.length < this.pagesPerSection) {
         pagesArr = Array.from(
           Array(this.pagesPerSection),
-          (val, i) =>
-            pagesArr[pagesArr.length - 1] -
-                        this.pagesPerSection +
-                        i +
-                        1
+          (val, i) => pagesArr[pagesArr.length - 1] - this.pagesPerSection + i + 1
         )
       }
       return pagesArr
@@ -133,8 +120,7 @@ export default {
         showNext,
         showPrev,
         prev: () => {
-          let page =
-                        (this.currentSection - 2) * this.pagesPerSection + 1
+          let page = (this.currentSection - 2) * this.pagesPerSection + 1
           this.toPage(page)
         },
         next: () => {
