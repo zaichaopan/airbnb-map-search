@@ -65,9 +65,7 @@ export default {
       this.map = new this.googleMaps.Map(this.$refs.map, {
         zoom: this.zoom,
         zoomControl: true,
-        zoomControlOptions: {
-          position: window.google.maps.ControlPosition.LEFT_TOP
-        },
+        zoomControlOptions: { position: window.google.maps.ControlPosition.LEFT_TOP },
         center: this.center
       })
       this.MarkerWithLabel = markWithLabel(this.googleMaps)
@@ -78,12 +76,8 @@ export default {
       this.map.setCenter(new this.googleMaps.LatLng(this.center))
     },
     addEvenListeners () {
-      ['zoom_changed', 'dragend'].forEach(event =>
-        this.map.addListener(event, () => this.handleMapChanged())
-      )
-      this.map.addListener('bounds_changed', () =>
-        this.handleMapFullyLoaded()
-      )
+      ['zoom_changed', 'dragend'].forEach(event => this.map.addListener(event, () => this.handleMapChanged()))
+      this.map.addListener('bounds_changed', () => this.handleMapFullyLoaded())
     },
     handleMapChanged () {
       this.infoWindow.close()
@@ -99,32 +93,21 @@ export default {
     handleHoveredRoom () {
       this.markers.forEach(marker => {
         if (this.hoveredRoom === null) {
-          return (
-            ~marker.labelClass.indexOf('hovered') &&
-                        this.resetLabelClass(marker, 'map-price-container')
-          )
+          return (~marker.labelClass.indexOf('hovered') && this.resetLabelClass(marker, 'map-price-container'))
         }
         if (marker.room.id === this.hoveredRoom.id) {
-          return this.resetLabelClass(
-            marker,
-            'map-price-container-hovered'
-          )
+          return this.resetLabelClass(marker, 'map-price-container-hovered')
         }
-        ~marker.labelClass.indexOf('hovered') &&
-                    this.resetLabelClass(marker, 'map-price-container')
+        ~marker.labelClass.indexOf('hovered') && this.resetLabelClass(marker, 'map-price-container')
       })
     },
     clearMarkers () {
-      this.markers.forEach(marker => {
-        marker.setMap(null)
-      })
+      this.markers.forEach(marker => { marker.setMap(null) })
     },
     addMarkers () {
       this.markers = this.rooms.map(room => {
         let { lat, lng } = room
-        const marker = new this.MarkerWithLabel(
-          this.getMarkerLabelOptions({ lat, lng }, room, this.map)
-        )
+        const marker = new this.MarkerWithLabel(this.getMarkerLabelOptions({ lat, lng }, room, this.map))
         marker.room = room
         return marker
       })
@@ -140,11 +123,11 @@ export default {
       lableContentClass = 'map-price-marker'
     ) {
       return {
+        map,
         position,
+        icon: ' ',
         draggable: false,
         raiseOnDrag: true,
-        icon: ' ',
-        map,
         labelContent: `<div class="${lableContentClass}"><span>$${
           room.price
         }</span></div>`,
@@ -167,8 +150,7 @@ export default {
       })
     },
     resetInfoWindow () {
-      this.infoWindow =
-                this.infoWindow && new this.googleMaps.InfoWindow()
+      this.infoWindow = this.infoWindow && new this.googleMaps.InfoWindow()
       return this.infoWindow
     },
     createInfoWindow () {
@@ -178,27 +160,23 @@ export default {
       this.handleInfoWindowDomReady(this.infoWindow)
       this.markers.forEach(marker =>
         marker.addListener('click', function () {
-          infoWindow.setContent(
-            infoWindowHelper.getContentHtml(this)
-          )
+          infoWindow.setContent(infoWindowHelper.getContentHtml(this))
           infoWindow.open(vm.map, this)
         })
       )
     }
   },
-  mounted () {
-    loadGoogleMapsApi({
-      key: googleMapKey,
-      libraries: ['places']
-    })
-      .then(googleMaps => {
-        this.googleMaps = googleMaps
-        this.initMap()
-        this.addEvenListeners()
+  async mounted () {
+    try {
+      this.googleMaps = await loadGoogleMapsApi({
+        key: googleMapKey,
+        libraries: ['places']
       })
-      .catch(error => {
-        console.error(error)
-      })
+      this.initMap()
+      this.addEvenListeners()
+    } catch (e) {
+      console.error(e)
+    }
   }
 }
 </script>

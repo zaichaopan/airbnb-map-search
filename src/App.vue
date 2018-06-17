@@ -5,7 +5,7 @@
             <div class="flex w-full bg-white search-container fixed items-center">
                 <div class="search-input lg:w-1/2 w-full">
                     <address-autocomplete v-model="place"
-                                            custom-class="flex w-full shadow appearance-none border rounded text-grey-dark items-center">
+                                          custom-class="flex w-full shadow appearance-none border rounded text-grey-dark items-center">
                     </address-autocomplete>
                 </div>
             </div>
@@ -35,9 +35,9 @@
 
                 <div class="flex mt-4 h-32 justify-center">
                     <simple-paginator :meta="roomMeta"
-                                    v-if="roomMeta"
-                                    @pagination:switched="fetchRooms"
-                                    :pages-per-section="3">
+                                      v-if="roomMeta"
+                                      @pagination:switched="fetchRooms"
+                                      :pages-per-section="3">
                     </simple-paginator>
                 </div>
             </div>
@@ -56,12 +56,12 @@
 </template>
 
 <script>
-import roomApi from './api/rooms';
-import RoomMap from './components/RoomMap';
-import RoomList from './components/RoomList';
-import ToggleSwitch from './components/ToggleSwitch';
-import SimplePaginator from './components/SimplePaginator';
-import AddressAutocomplete from './components/AddressAutocomplete';
+import roomApi from './api/rooms'
+import RoomMap from './components/RoomMap'
+import RoomList from './components/RoomList'
+import ToggleSwitch from './components/ToggleSwitch'
+import SimplePaginator from './components/SimplePaginator'
+import AddressAutocomplete from './components/AddressAutocomplete'
 
 export default {
   name: 'App',
@@ -98,100 +98,96 @@ export default {
       roomMeta: null,
       mapBounds: null,
       showMap: true
-    };
+    }
   },
   computed: {
     center () {
       return {
         lat: this.place.lat,
         lng: this.place.lng
-      };
+      }
     },
     roomListTitle () {
-      let title = '';
+      let title = ''
       switch (true) {
       case this.roomMeta === null:
-        title = 'loading ...';
-        break;
+        title = 'loading ...'
+        break
       case this.roomMeta.total === 0:
-        title = 'No results';
-        break;
+        title = 'No results'
+        break
       case this.roomMeta.total === 1:
-        title = '1 result';
-        break;
+        title = '1 result'
+        break
       default:
-        title = `${this.roomMeta.total} results`;
-        break;
+        title = `${this.roomMeta.total} results`
+        break
       }
-      return title;
+      return title
     }
   },
   methods: {
     handleBoundsChanged ({ mapBounds }) {
-      this.mapBounds = mapBounds;
-      this.fetchRooms(1);
+      this.mapBounds = mapBounds
+      this.fetchRooms(1)
     },
     getBounds () {
-      let xMapBounds = this.mapBounds.b;
-      let yMapBounds = this.mapBounds.f;
+      let xMapBounds = this.mapBounds.b
+      let yMapBounds = this.mapBounds.f
       return {
         minLat: yMapBounds.b,
         maxLat: yMapBounds.f,
         minLng: xMapBounds.b,
         maxLng: xMapBounds.f
-      };
+      }
     },
-    fetchRooms (page = 1) {
-      let { minLat, maxLat, minLng, maxLng } = this.getBounds();
-      roomApi
-        .getAll(
-          `/api/rooms?page=${page}&min_lng=${minLng}&max_lng=${maxLng}&min_lat=${minLat}&max_lat=${maxLat}`
-        )
-        .then(res => {
-          this.rooms = res.data;
-          this.roomMeta = res.meta;
-          window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-          });
-        });
+    async fetchRooms (page = 1) {
+      try {
+        let { minLat, maxLat, minLng, maxLng } = this.getBounds()
+        let res = await roomApi.getAll(`/api/rooms?page=${page}&min_lng=${minLng}&max_lng=${maxLng}&min_lat=${minLat}&max_lat=${maxLat}`)
+        this.rooms = res.data
+        this.roomMeta = res.meta
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+      } catch (e) {
+        console.log(e)
+      }
     },
     handleRoomHovered (room) {
-      this.hoveredRoom = room;
+      this.hoveredRoom = room
     },
     handleRoomUnhovered () {
-      this.hoveredRoom = null;
+      this.hoveredRoom = null
     }
   }
-};
+}
 </script>
 
 <style lang="scss">
 #app {
-    font-family: "Avenir", Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    color: #2c3e50;
-    .search-container {
-        top: 0;
-        height: 80px;
-        background: white;
-        z-index: 10;
-    }
-    .filter-container {
-        top: 80px;
-        background: white;
-        z-index: 10;
-    }
-    .room-map-container {
-        margin-top: 140px;
-    }
-    .map-before {
-        position: absolute;
-        left: -1000%;
-    }
-    .map-after {
-        position: relative;
-    }
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #2c3e50;
+  .search-container {
+    top: 0;
+    height: 80px;
+    background: white;
+    z-index: 10;
+  }
+  .filter-container {
+    top: 80px;
+    background: white;
+    z-index: 10;
+  }
+  .room-map-container {
+    margin-top: 140px;
+  }
+  .map-before {
+    position: absolute;
+    left: -1000%;
+  }
+  .map-after {
+    position: relative;
+  }
 }
 </style>

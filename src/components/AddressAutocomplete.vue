@@ -106,18 +106,16 @@ export default {
       return addArr.join(',')
     }
   },
-  mounted () {
-    loadGoogleMapsApi({
-      key: googleMapKey,
-      libraries: ['places']
-    })
-      .then(googleMaps => {
-        this.googleMaps = googleMaps
-        this.autocomplete()
+  async mounted () {
+    try {
+      this.googleMaps = await loadGoogleMapsApi({
+        key: googleMapKey,
+        libraries: ['places']
       })
-      .catch(error => {
-        console.error(error)
-      })
+      this.autocomplete()
+    } catch (e) {
+      console.log(e)
+    }
   }
 }
 </script>
