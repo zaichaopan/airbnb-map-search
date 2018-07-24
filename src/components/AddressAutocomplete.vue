@@ -28,8 +28,8 @@
 
 <script>
 import ClickOutside from './ClickOutside'
-import loadGoogleMapsApi from '../utils/load-google-map-api'
 import {googleMapKey} from '../../config'
+import { load } from '@zaichaopan/load-script'
 
 export default {
   components: {
@@ -108,10 +108,17 @@ export default {
   },
   async mounted () {
     try {
-      this.googleMaps = await loadGoogleMapsApi({
-        key: googleMapKey,
-        libraries: ['places']
+      let google = await load({
+        src: 'https://maps.googleapis.com/maps/api/js',
+        callbackName: 'callback',
+        resolve: 'google',
+        params: {
+          key: googleMapKey,
+          libraries: 'places'
+        }
       })
+
+      this.googleMaps = google.maps
       this.autocomplete()
     } catch (e) {
       console.log(e)

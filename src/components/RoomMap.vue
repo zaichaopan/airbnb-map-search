@@ -7,9 +7,9 @@
 
 <script>
 import infoWindowHelper from '../utils/room-map-infowindow'
-import loadGoogleMapsApi from '../utils/load-google-map-api'
 import markWithLabel from '../utils/marker-with-label'
 import {googleMapKey} from '../../config'
+import { load } from '@zaichaopan/load-script'
 
 export default {
   props: {
@@ -37,7 +37,7 @@ export default {
   data () {
     return {
       map: null,
-      googoleMaps: null,
+      googleMaps: null,
       MarkerWithLabel: null,
       infoWindow: null,
       markers: [],
@@ -168,14 +168,21 @@ export default {
   },
   async mounted () {
     try {
-      this.googleMaps = await loadGoogleMapsApi({
-        key: googleMapKey,
-        libraries: ['places']
+      let google = await load({
+        src: 'https://maps.googleapis.com/maps/api/js',
+        callbackName: 'callback',
+        resolve: 'google',
+        params: {
+          key: googleMapKey,
+          libraries: 'places'
+        }
       })
+
+      this.googleMaps = google.maps
       this.initMap()
       this.addEvenListeners()
     } catch (e) {
-      console.error(e)
+      console.log(e)
     }
   }
 }
