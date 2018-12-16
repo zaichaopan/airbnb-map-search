@@ -132,8 +132,8 @@ export default {
       this.fetchRooms(1)
     },
     getBounds () {
-      let xMapBounds = this.mapBounds.b || this.mapBounds.j
-      let yMapBounds = this.mapBounds.f || this.mapBounds.l
+      let xMapBounds = this.mapBounds.b || this.mapBounds.j || this.mapBounds.ea
+      let yMapBounds = this.mapBounds.f || this.mapBounds.l || this.mapBounds.la
       return {
         minLat: yMapBounds.b || yMapBounds.j,
         maxLat: yMapBounds.f || yMapBounds.l,
