@@ -132,13 +132,11 @@ export default {
       this.fetchRooms(1)
     },
     getBounds () {
-      let xMapBounds = this.mapBounds.b || this.mapBounds.j || this.mapBounds.ea
-      let yMapBounds = this.mapBounds.f || this.mapBounds.l || this.mapBounds.la
       return {
-        minLat: yMapBounds.b || yMapBounds.j,
-        maxLat: yMapBounds.f || yMapBounds.l,
-        minLng: xMapBounds.b || xMapBounds.j,
-        maxLng: xMapBounds.f || xMapBounds.l
+        minLat: this.mapBounds.getSouthWest().lat(),
+        maxLat: this.mapBounds.getNorthEast().lat(),
+        minLng: this.mapBounds.getSouthWest().lng(),
+        maxLng: this.mapBounds.getNorthEast().lng()
       }
     },
     async fetchRooms (page = 1) {
