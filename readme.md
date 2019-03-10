@@ -10,8 +10,6 @@ This repo recreates airbnb map search page using vue. It demonstrates:
 
 ![Demo](./demo.png "demo")
 
-Play it on [code sandbox](https://ry30v3x0lo.codesandbox.io/)
-
 ## Installation
 
 * Clone the repo
