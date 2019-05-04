@@ -63,15 +63,13 @@ const infoWindow = {
   },
   removeWhiteSpace () {
     let iwOuters = document.querySelectorAll('.gm-style-iw')
+
     for (const iwOuter of iwOuters) {
-      let iwBackground = iwOuter.previousElementSibling
-      
-      if (!iwBackground) {
-        return
-      }
-      
-      for (const child of iwBackground.children) {
-        child.style.display = 'none'
+      iwOuter.style.padding = 0
+
+      for (const child of iwOuter.querySelectorAll('.gm-style-iw-d')) {
+        console.log('called')
+        child.style.overflow = 'hidden'
       }
     }
   },
