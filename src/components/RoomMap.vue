@@ -316,6 +316,11 @@ export default {
   }
 }
 // remove close icon
+.gm-style .gm-style-iw-t::after {
+  top: auto;
+  bottom: -55px !important;
+}
+
 .gm-style-iw + div {
   display: none;
 }
