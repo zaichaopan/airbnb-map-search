@@ -41,7 +41,7 @@
           ></simple-paginator>
         </div>
       </div>
-      <div class="w-1/3 py-2 pr-4 fixed pin-r" :class="{'map-before': !showMap }">
+      <div class="w-1/3 py-2 pr-4 pin-r" :class="{'map-before': !showMap }">
         <room-map
           @bounds:changed="handleBoundsChanged"
           :rooms="rooms"
